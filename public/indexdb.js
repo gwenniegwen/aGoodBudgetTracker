@@ -10,7 +10,7 @@ request.onupgradeneeded = function (e) {
 };
 
 request.onerror = function (e) {
-    console.log("There was an error");
+    console.log("error");
 };
 
 request.onsuccess = function (e) {
