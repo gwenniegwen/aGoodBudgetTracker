@@ -1,10 +1,10 @@
-const FILES_TO_CACHE = ["/", "/index.html", "/index.js", "/indexdb.js", "/favicon.ico", "/styles.css"];
+const FILES_TO_CACHE = ["/", "/index.html", "/index.js", "/favicon.ico", "/styles.css"];
 
 const CACHE_NAME = "static-cache-v2";
 const DATA_CACHE_NAME = "data-cache-v1";
 
 // install
-self.addEventListener("install", function(evt) {
+self.addEventListener("install", function (evt) {
   evt.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       console.log("Your files were pre-cached successfully!");
@@ -12,11 +12,11 @@ self.addEventListener("install", function(evt) {
     })
   );
 
-//   self.skipWaiting();
+  //   self.skipWaiting();
 });
 
 // activate
-self.addEventListener("activate", function(evt) {
+self.addEventListener("activate", function (evt) {
   evt.waitUntil(
     caches.keys().then(keyList => {
       return Promise.all(
@@ -30,11 +30,11 @@ self.addEventListener("activate", function(evt) {
     })
   );
 
-//   self.clients.claim();
+  //   self.clients.claim();
 });
 
 // fetch
-self.addEventListener("fetch", function(evt) {
+self.addEventListener("fetch", function (evt) {
   if (evt.request.url.includes("/api/")) {
     evt.respondWith(
       caches.open(DATA_CACHE_NAME).then(cache => {
@@ -53,20 +53,21 @@ self.addEventListener("fetch", function(evt) {
           });
       }).catch(err => console.log(err))
     );
-
     return;
-}
-event.respondWith(
-    fetch(event.request).catch(()=>{
-        return caches.match(event.request)
-        .then(response =>{
-            if(response){
-                return response
-            }
-            else if (event.request.headers.get("accept").includes("text/html")){
-                // return the cached homepage for all requests for html pages//
-                return caches.match("/")
-            }
+  }
+
+
+  evt.respondWith(
+    fetch(evt.request).catch(() => {
+      return caches.match(evt.request)
+        .then(response => {
+          if (response) {
+            return response
+          }
+          else if (evt.request.headers.get("accept").includes("text/html")) {
+            // return the cached homepage for all requests for html pages//
+            return caches.match("/")
+          }
         })
     })
   );
