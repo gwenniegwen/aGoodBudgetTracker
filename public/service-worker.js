@@ -12,7 +12,7 @@ self.addEventListener("install", function (evt) {
     })
   );
 
-  //   self.skipWaiting();
+    self.skipWaiting();
 });
 
 // activate
@@ -30,7 +30,7 @@ self.addEventListener("activate", function (evt) {
     })
   );
 
-  //   self.clients.claim();
+    self.clients.claim();
 });
 
 // fetch
